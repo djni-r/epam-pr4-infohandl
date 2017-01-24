@@ -12,7 +12,11 @@
  */
 package by.malinouski.infohandling.parser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import by.malinouski.infohandling.composite.TextComponent;
+import by.malinouski.infohandling.composite.TextComposite;
 
 /**
  * @author makarymalinouski
@@ -20,19 +24,23 @@ import by.malinouski.infohandling.composite.TextComponent;
  */
 public class ParagraphParser implements ParserChain {
 
+    private final static String SENTENCE_REGEX = "[\\p{Alnum}\\p{Upper}](\\w| )*[.]";
+    
     /**
-     * 
-     */
-    public ParagraphParser() {
-        // TODO Auto-generated constructor stub
-    }
-
-    /* (non-Javadoc)
+     * Parses paragraphs into sentences and words
      * @see by.malinouski.infohandling.parser.ParserChain#parse(java.lang.String)
      */
     @Override
     public TextComponent parse(String text) {
-        return null;
+        SentenceParser sParser = new SentenceParser();
+        TextComposite fullParagraph = new TextComposite();
+        Matcher matcher = Pattern.compile(SENTENCE_REGEX).matcher(text);
+        
+        while (matcher.find()) {
+            fullParagraph.add(sParser.parse(matcher.group()));
+        }
+        
+        return fullParagraph;
     }
 
 }

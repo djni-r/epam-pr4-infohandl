@@ -13,6 +13,7 @@
 package by.malinouski.infohandling.parser;
 
 import by.malinouski.infohandling.composite.TextComponent;
+import by.malinouski.infohandling.composite.TextComposite;
 
 /**
  * @author makarymalinouski
@@ -21,13 +22,20 @@ import by.malinouski.infohandling.composite.TextComponent;
  */
 public class TextParser implements ParserChain {
 
-    public TextParser() {
-    }
+    private static final String PARAGRAPH_REGEX = "\\r";
 
     /**
      * Parses text String into an object of type Component
+     * broken into paragraphs, sentences, words and letters or punctuation
      */
     public TextComponent parse(String text) {
-        return null;
+        ParagraphParser pParser = new ParagraphParser();
+        TextComposite fullText = new TextComposite();
+        
+        for (String paragraph : text.split(PARAGRAPH_REGEX)) {
+            fullText.add(pParser.parse(paragraph));
+        }
+        
+        return fullText;
     }
 }

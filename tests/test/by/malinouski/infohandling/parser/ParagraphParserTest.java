@@ -10,29 +10,38 @@ import by.malinouski.infohandling.composite.Letter;
 import by.malinouski.infohandling.composite.Punctuation;
 import by.malinouski.infohandling.composite.TextComponent;
 import by.malinouski.infohandling.composite.TextComposite;
-import by.malinouski.infohandling.parser.TextParser;
+import by.malinouski.infohandling.parser.ParagraphParser;
 
-public class TextParserTest {
+public class ParagraphParserTest {
 
+    private static final String PARAGRAPH = "I is. I.";
     private static final String SIMPLE_TEXT = "S.";
-    private static final String TABBED_TEXT = "I is.\rI. I is.";
     private static TextComponent simpleText;
-    private static TextComponent tabbedText;
-    private TextParser parser;
-    
+    private ParagraphParser parser;
+
+
     @BeforeClass
     public static void createSimpleComponent() {
         Letter letter = new Letter('S');
-        Punctuation dot = new Punctuation('.');
-
         TextComposite text = new TextComposite();
         text.add(letter);
-        text.add(dot);
         simpleText = text;
     }
     
-    @BeforeClass
-    public static void createTabbedComponent() {
+    @Before
+    public void initParser() {
+        parser = new ParagraphParser();
+    }
+    
+    @Test
+    public void parserTestSimple() {
+        TextComponent text = parser.parse(SIMPLE_TEXT);
+        
+        assertEquals(text, simpleText);
+    }
+    
+    @Test
+    public void parserTest() {
         Letter capI = new Letter('I');
         Letter i = new Letter('i');
         Letter s = new Letter('s');
@@ -62,37 +71,12 @@ public class TextParserTest {
         TextComposite secondSentence = new TextComposite();
         secondSentence.add(wordCapIDot);
         
-        TextComposite firstParagraph = new TextComposite();
-        firstParagraph.add(firstSentence);
+        TextComposite paragraph = new TextComposite();
+        paragraph.add(firstSentence);
+        paragraph.add(secondSentence);
         
-        TextComposite secondParagraph = new TextComposite();
-        secondParagraph.add(secondSentence);
-        secondParagraph.add(firstSentence);
+        assertEquals(paragraph, parser.parse(PARAGRAPH));
         
-        TextComposite fullText = new TextComposite();
-        fullText.add(firstParagraph);
-        fullText.add(secondParagraph);
-        
-        tabbedText = fullText;
-    }
-    
-    @Before
-    public void initParser() {
-        parser = new TextParser();
-    }
-    
-    @Test
-    public void parseTestSimple() {
-        TextComponent text = parser.parse(SIMPLE_TEXT);
-        
-        assertEquals(text, simpleText);
-    }
-    
-    @Test
-    public void parseTestHasTab() {
-        TextComponent text = parser.parse(TABBED_TEXT);
-        System.out.println(text);
-        assertEquals(text, tabbedText);
     }
 
 }
