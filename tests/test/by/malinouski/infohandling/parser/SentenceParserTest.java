@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import by.malinouski.infohandling.composite.Letter;
@@ -16,19 +17,8 @@ public class SentenceParserTest {
 
     private static final String SENTENCE = "I is.";
     private static final String SIMPLE_TEXT = "S.";
-    private static TextComponent simpleText;
     private SentenceParser parser;
     
-    @BeforeClass
-    public static void createSimpleComponent() {
-        Letter letter = new Letter('S');
-        Punctuation dot = new Punctuation('.');
-
-        TextComposite text = new TextComposite();
-        text.add(letter);
-        text.add(dot);
-        simpleText = text;
-    }
         
     @Before
     public void initParser() {
@@ -37,9 +27,17 @@ public class SentenceParserTest {
     
     @Test
     public void parserTestSimple() {
-        TextComponent text = parser.parse(SIMPLE_TEXT);
+        Letter letter = new Letter('S');
+        Punctuation dot = new Punctuation('.');
+
+        TextComposite word = new TextComposite();
+        word.add(letter);
+        word.add(dot);
         
-        assertEquals(simpleText, text);
+        TextComposite expectedSentence = new TextComposite();
+        expectedSentence.add(word);
+        
+        assertEquals(expectedSentence, parser.parse(SIMPLE_TEXT));
     }
     
     @Test

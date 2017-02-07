@@ -42,13 +42,15 @@ public class Calculator {
     /**
      * Calculates math expression and returns the result
      */
-    public Double calculate(String expression) {
+    public String calculate(String expression) {
+        LOGGER.debug(expression);
         Stack<Double> context = new Stack<>();
         for(MathExpression expr : parseExpr(expression)) {
             expr.interpret(context);
         }
-        
-        return context.pop();
+        String result = String.valueOf(Math.round(context.pop()));
+        LOGGER.debug(result);
+        return result;
     }
     
     /**
@@ -60,13 +62,11 @@ public class Calculator {
         List<MathExpression> expressionList = new ArrayList<>(); 
         
         String newExpression = expression.replace("sin", "s").replace("cos", "c");
-        LOGGER.debug(newExpression);
         for (String symbol : convertToRpn(newExpression).split(BLANK_REGEX)) {
             if (symbol.isEmpty()) {
                 continue;
             }
             
-            LOGGER.debug(symbol.charAt(0));
             switch (symbol.charAt(0)) {
                 case '+':
                     expressionList.add(new TermExpressionAdd());
@@ -93,7 +93,6 @@ public class Calculator {
                     }
             }
         }
-        LOGGER.debug(expressionList);
         return expressionList;
     }
     
@@ -151,6 +150,7 @@ public class Calculator {
             exit.append(stack.pop()).append(" ");
         }
         
+        sc.close();
         return exit.toString();
     }
     

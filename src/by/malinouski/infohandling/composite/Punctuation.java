@@ -12,6 +12,8 @@
  */
 package by.malinouski.infohandling.composite;
 
+import java.util.List;
+
 /**
  * @author makarymalinouski
  *
@@ -23,29 +25,42 @@ public class Punctuation implements TextComponent {
     public Punctuation(Character ch) {
         character = ch;
     }
-
-    @Override
-    public void add(TextComponent component) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void remove(TextComponent component) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int count() {
-        return 1;
-    }
     
     public Character getCharacter() {
         return character;
     }
     
     @Override
+    public void add(TextComponent component) {
+        throw new UnsupportedOperationException("Cannot add component");
+    }
+
+    @Override
+    public void remove(TextComponent component) {
+        throw new UnsupportedOperationException("Cannot remove component");
+    }
+
+    @Override
+    public int countComponents() {
+        return 1;
+    }
+
+    @Override
+    public List<TextComponent> getComponents() {
+        throw new UnsupportedOperationException("Cannot remove component");
+    }
+    
+    @Override
+    public void makeImmutable() {
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Punctuation)) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (obj == null || (obj.getClass() != getClass())) {
             return false;
         }
         
@@ -61,5 +76,4 @@ public class Punctuation implements TextComponent {
     public String toString() {
         return character.toString();
     }
-
 }

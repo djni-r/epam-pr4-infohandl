@@ -12,6 +12,7 @@
  */
 package by.malinouski.infohandling.composite;
 
+import java.util.List;
 
 /**
  * @author makarymalinouski
@@ -24,29 +25,42 @@ public class Letter implements TextComponent {
     public Letter(Character ch) {
         this.character = ch;
     }
+    
+    public Character getCharacter() {
+        return character;
+    }
 
     @Override
-    public int count() {
+    public int countComponents() {
         return 1;
     }
 
     @Override
     public void add(TextComponent component) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Cannot add components");
     }
 
     @Override
     public void remove(TextComponent component) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Cannot remove components");
     }
     
-    public Character getCharacter() {
-        return character;
+    @Override
+    public List<TextComponent> getComponents() {
+        throw new UnsupportedOperationException("Cannot remove component");
+    }
+
+    @Override
+    public void makeImmutable() {
     }
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Letter)) {
+        if (this == obj) {
+            return true;
+        }
+        
+        if (obj == null || (obj.getClass() != getClass())) {
             return false;
         }
         
@@ -62,5 +76,4 @@ public class Letter implements TextComponent {
     public String toString() {
         return character.toString();
     }
-
 }

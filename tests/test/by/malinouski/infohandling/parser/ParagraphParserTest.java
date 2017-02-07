@@ -14,19 +14,11 @@ import by.malinouski.infohandling.parser.ParagraphParser;
 
 public class ParagraphParserTest {
 
-    private static final String PARAGRAPH = "I is. I.";
-    private static final String SIMPLE_TEXT = "S.";
-    private static TextComponent simpleText;
+    private static final String PARAGRAPH = "I is. I.\r";
+    private static final String SIMPLE_TEXT = "S.\r";
     private ParagraphParser parser;
 
 
-    @BeforeClass
-    public static void createSimpleComponent() {
-        Letter letter = new Letter('S');
-        TextComposite text = new TextComposite();
-        text.add(letter);
-        simpleText = text;
-    }
     
     @Before
     public void initParser() {
@@ -35,9 +27,20 @@ public class ParagraphParserTest {
     
     @Test
     public void parserTestSimple() {
-        TextComponent text = parser.parse(SIMPLE_TEXT);
+        Letter letter = new Letter('S');
+        Punctuation dot = new Punctuation('.');
         
-        assertEquals(text, simpleText);
+        TextComposite word = new TextComposite();
+        word.add(letter);
+        word.add(dot);
+        
+        TextComposite sentence = new TextComposite();
+        sentence.add(word);
+        
+        TextComposite paragraph = new TextComposite();
+        paragraph.add(sentence);
+        
+        assertEquals(paragraph, parser.parse(SIMPLE_TEXT));
     }
     
     @Test

@@ -12,7 +12,9 @@
  */
 package by.malinouski.infohandling.functionality;
 
-import java.util.List;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import by.malinouski.infohandling.composite.TextComponent;
 
@@ -22,16 +24,26 @@ import by.malinouski.infohandling.composite.TextComponent;
  */
 public class SentenceSorter {
 
-    public SentenceSorter() {
-        // TODO Auto-generated constructor stub
-    }
-
     /**
      * Sort sentences by the amount of words in them
      * @param text the entire thext
      * @return list of sentences
      */
-    public List<TextComponent> sortByWordCount(TextComponent text) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public SortedSet<TextComponent> sortByWordCount(TextComponent text) {
+        SortedSet<TextComponent> sentencesSet = new TreeSet<>(
+                new Comparator<TextComponent>() {
+                    @Override
+                    public int compare(TextComponent o1, TextComponent o2) {
+                        return o1.countComponents() - o2.countComponents();
+                    }
+                }); 
+        
+        for (TextComponent paragraph : text.getComponents()) {
+            for (TextComponent sentence : paragraph.getComponents()) {
+                sentencesSet.add(sentence);
+            }
+        }
+        
+        return sentencesSet;
     }
 }

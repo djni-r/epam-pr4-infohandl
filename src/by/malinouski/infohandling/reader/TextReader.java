@@ -12,6 +12,14 @@
  */
 package by.malinouski.infohandling.reader;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 /**
  * @author makarymalinouski
  * 
@@ -19,15 +27,17 @@ package by.malinouski.infohandling.reader;
  */
 public class TextReader {
 
-    public TextReader() {
-        // TODO Auto-generated constructor stub
-    }
-    
+    private static final Logger LOGGER = LogManager.getLogger(TextReader.class);
     /**
      * Reads text from fileName returing it as one String
      */
     public String read(final String fileName) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        try {
+            return new String(Files.readAllBytes(new File(fileName).toPath()));
+        } catch (IOException e) {
+            LOGGER.fatal("Couldn't read file " + e.getMessage());
+            throw new RuntimeException("Couldn't read file");
+        }
     }
 
 }

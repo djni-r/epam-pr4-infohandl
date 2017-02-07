@@ -12,6 +12,9 @@
  */
 package by.malinouski.infohandling.functionality;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import by.malinouski.infohandling.composite.TextComponent;
 
 /**
@@ -20,13 +23,6 @@ import by.malinouski.infohandling.composite.TextComponent;
  */
 public class TextPrinter {
 
-    /**
-     * 
-     */
-    public TextPrinter() {
-        // TODO Auto-generated constructor stub
-    }
-    
     /**
      * Prints words by alphabet (first letter of the word)
      * Each new letter starts from new line
@@ -37,7 +33,22 @@ public class TextPrinter {
      * @param text the entire text
      */
     public void printWordsByAlphabet(TextComponent text) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        SortedMap<Character, String> wordsMap = new TreeMap<>();
+        
+        for (TextComponent paragraph : text.getComponents()) {
+            for (TextComponent sentence : paragraph.getComponents()) {
+                for (TextComponent word : sentence.getComponents()) {
+                    String wordStr = word.toString() + " ";
+                    Character key = Character.toLowerCase(wordStr.charAt(0));
+                    
+                    wordsMap.merge(key, wordStr, String::concat);
+                }
+            }
+        }
+        
+        for (String words : wordsMap.values()) {
+            System.out.println(words);
+        }
     }
 
 }
